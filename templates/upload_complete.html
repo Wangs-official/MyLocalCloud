@@ -1,0 +1,12 @@
+<!doctype html>
+<script>
+    alert('文件上传成功')
+    var url = window.location.href;
+    var domain = url.split("/");
+    if( domain[2] ) {
+        domain = domain[2];
+    } else {
+        domain = ''; 
+    }
+    window.location.replace("http://" + domain);
+</script>

@@ -1,0 +1,12 @@
+<!doctype html>
+<script>
+    alert('文件删除失败,如果问题持续出现,请提交Issues\n如果您正在使用访客用户身份访问,那么您将无法使用上传与删除功能')
+    var url = window.location.href;
+    var domain = url.split("/");
+    if( domain[2] ) {
+        domain = domain[2];
+    } else {
+        domain = ''; 
+    }
+    window.location.replace("http://" + domain);
+</script>

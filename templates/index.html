@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>MyLocalCloud</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700,800|Roboto:400,500,700" rel="stylesheet"> 
+
+    <!-- Boomerang CSS (including Bootstrap) -->
+    <link type="text/css" href="{{ url_for('static', filename='assets/css/theme.css') }}" rel="stylesheet">
+</head>
+<style>
+
+</style>
+<body>
+    <main class="main">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <a class="navbar-brand" href="#">MyLocalCloud</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar_example_1" aria-controls="navbar_example_1" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbar_example_1">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">文件列表 <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://github.com/wangs-official/mylocalcloud">GitHub</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">登录账号:{{ l_user_level }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">退出登录</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div style="padding: 50px;">
+            <h3>文件列表</h1>
+            <div style="padding-top: 15px;"></div>
+                <table class="table table-hover align-items-center">
+                    <tr>
+                        <th>文件名</th>
+                        <th>大小</th>
+                        <th>上传时间</th>
+                        <th>操作</th>
+                    </tr>
+                    {% for file in files %}
+                    <tr>
+                        <td>{{ file.filename }}</td>
+                        <td>{{ file.size }} bytes</td>
+                        <td>{{ file.upload_time }}</td>
+                        <td>
+                            <a href="/download/{{ file.filename }}">下载</a>
+                            <a href="/delete/{{ file.filename }}">删除</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            <br>
+            <form action="/upload" method="POST" enctype="multipart/form-data" multiple class="form-group">
+                <input type="file" name="file"><br><br>
+                <input type="submit" value="上传" class="btn btn-primary">
+            </form>
+        </div>
+        <br>
+        <center>
+            <p>☁️ MyLocalCloud 由Wangs_official制作 以MIT许可证开源</p>
+        </center>
+    </main>
+
+    <script src="{{ url_for('static', filename='assets/vendor/jquery/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/vendor/popper/popper.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/vendor/bootstrap/js/bootstrap.min.js') }}"></script>
+    
+    <!-- FontAwesome 5 -->
+    <script src="{{ url_for('static', filename='assets/vendor/fontawesome/js/fontawesome-all.min.js') }}"></script>
+    
+    <!-- Boomerang JS -->
+    <script src="{{ url_for('static', filename='assets/js/theme.js') }}"></script>
+</body>
+</html>

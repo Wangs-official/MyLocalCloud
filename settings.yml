@@ -1,0 +1,9 @@
+app:
+  port : 65530 # 端口
+  file_save_path : 'file' # 文件存储位置
+auth:
+  user_name : 'admin'
+  user_password : 'Passw0rd'
+guest:
+  enable : true
+  # 访客账号名为guest,密码为空

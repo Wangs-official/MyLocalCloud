@@ -1,0 +1,66 @@
+<head>
+    <title>Login</title>
+    <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700,800|Roboto:400,500,700" rel="stylesheet"> 
+
+    <!-- Boomerang CSS (including Bootstrap) -->
+    <link type="text/css" href="{{ url_for('static', filename='assets/css/theme.css') }}" rel="stylesheet">
+    <script src="{{ url_for('static', filename='assets/vendor/jquery/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/vendor/popper/popper.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/vendor/bootstrap/js/bootstrap.min.js') }}"></script>
+    
+    <!-- FontAwesome 5 -->
+    <script src="{{ url_for('static', filename='assets/vendor/fontawesome/js/fontawesome-all.min.js') }}"></script>
+    
+    <!-- Boomerang JS -->
+    <script src="{{ url_for('static', filename='assets/js/theme.js') }}"></script>
+</head>
+
+<main class="main">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <a class="navbar-brand" href="#">MyLocalCloud-登录</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar_example_1" aria-controls="navbar_example_1" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </nav>
+</main>
+<div style="padding: 60px;text-align: center;">
+<h2>登录到MyLocalCloud</h2><br>
+<form id="login-form" class="form-group">
+    <input type="text" name="username" placeholder="用户名" required class="form-control"><br>
+    <input type="password" name="password" placeholder="密码" class="form-control"><br>
+    <input type="submit" value="登录" class="btn btn-sm btn-outline-primary">
+</form>
+<center>
+    <input type="button" onclick="javascript:location.reload();" value="点击登录按钮后,若无反应则表示登录成功,请点击这里刷新页面以继续" class="btn btn-sm btn-outline-primary"><br><br>
+    <p>☁️ MyLocalCloud 由Wangs_official制作 以MIT许可证开源</p>
+</center>
+</div>
+
+<script>
+    alert('点击登录按钮后,若无反应则表示登录成功,请点击下方按钮/F5刷新页面以继续')
+    document.getElementById("login-form").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        var username = document.getElementsByName("username")[0].value;
+        var password = document.getElementsByName("password")[0].value;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/login", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    if (response.success) {
+                        location.reload();
+                    } else {
+                        alert("登录失败!原因: " + response.message);
+                    }
+                } else {
+                    alert("Error: " + xhr.status);
+                }
+            }
+        };
+        xhr.send("username=" + encodeURIComponent(username) + "&password=" + encodeURIComponent(password));
+    });
+</script>

@@ -1,0 +1,5 @@
+__pycache__
+*.pyc
+templates/docs
+file
+.DS_Store
