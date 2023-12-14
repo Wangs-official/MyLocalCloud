@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, send_from_directory , jsonify , session , redirect
+from flask import Flask, render_template, request, send_from_directory , jsonify , session , redirect , url_for
 import yaml
 import logging
 import os
@@ -50,10 +50,12 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = app_save_path
 app.secret_key = os.urandom(24)
 
-@app.route('/login' , methods=['POST'])
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
+@app.route('/login_auth' , methods=['POST'])
 def login_auth():
-    global login_status
-    global guest_login
     username = request.form['username']
     password = request.form['password']
     if not username:
@@ -64,19 +66,17 @@ def login_auth():
             return jsonify({'success': False, 'message': '访客访问未开启'})
         else:
             session['username'] = 'guest'
-            return redirect('/')
-
+            return jsonify({'success': True})
     if username == y['auth']['user_name'] and password == y['auth']['user_password']:
         session['username'] = username
-        return redirect('/')
-    
+        return jsonify({'success': True})
     else:
         return jsonify({'success': False, 'message': '用户名或密码错误'})
 
 @app.route('/')
 def index():
     if not 'username' in session :
-        return render_template('login.html')
+        return redirect('/login')
     if session['username'] == 'guest' :
         ul = f'Guest - 访客用户(只读)'
     else:
@@ -87,13 +87,13 @@ def index():
 @app.route('/download/<filename>')
 def download_file(filename):
     if not 'username' in session :
-        return render_template('login.html')
+        return redirect('/login')
     return send_from_directory(app_save_path, filename)
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
     if not 'username' in session :
-        return render_template('login.html')
+        return redirect('/login')
     file = request.files['file']
     if session['username'] == 'guest':
         return render_template('upload_failed.html')
@@ -107,7 +107,7 @@ def upload_file():
 @app.route('/delete/<filename>')
 def delete_file(filename):
     if not 'username' in session :
-        return render_template('login.html')
+        return redirect('/login')
     file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     if session['username'] == 'guest':
         return render_template('delete_failed.html')
@@ -120,7 +120,7 @@ def delete_file(filename):
 @app.route('/logout')
 def logout():
     session.pop('username', None)
-    return redirect('/')
+    return redirect('/login')
 
 
 # def

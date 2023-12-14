@@ -31,13 +31,11 @@
     <input type="submit" value="登录" class="btn btn-sm btn-outline-primary">
 </form>
 <center>
-    <input type="button" onclick="javascript:location.reload();" value="点击登录按钮后,若无反应则表示登录成功,请点击这里刷新页面以继续" class="btn btn-sm btn-outline-primary"><br><br>
     <p>☁️ MyLocalCloud 由Wangs_official制作 以MIT许可证开源</p>
 </center>
 </div>
 
 <script>
-    alert('点击登录按钮后,若无反应则表示登录成功,请点击下方按钮/F5刷新页面以继续')
     document.getElementById("login-form").addEventListener("submit", function(event) {
         event.preventDefault();
 
@@ -45,14 +43,22 @@
         var password = document.getElementsByName("password")[0].value;
 
         var xhr = new XMLHttpRequest();
-        xhr.open("POST", "/login", true);
+        xhr.open("POST", "/login_auth", true);
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         xhr.onreadystatechange = function() {
             if (xhr.readyState === XMLHttpRequest.DONE) {
                 if (xhr.status === 200) {
                     var response = JSON.parse(xhr.responseText);
                     if (response.success) {
-                        location.reload();
+                        alert('登录成功!')
+                        var url = window.location.href;
+                        var domain = url.split("/");
+                        if( domain[2] ) {
+                            domain = domain[2];
+                        } else {
+                            domain = ''; 
+                        }
+                        window.location.replace("http://" + domain);
                     } else {
                         alert("登录失败!原因: " + response.message);
                     }
