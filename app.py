@@ -37,7 +37,6 @@ try:
             exit()
 
 except IOError:
-
     logging.error('未找到settings.yml文件')
     exit()
 
@@ -136,7 +135,7 @@ def get_files_list():
             files.append({'filename': filename, 'size': file_size, 'upload_time': upload_time})
         else:
             logging.error('文件获取失败,若问题持续出现,请提交Issues')
-            exit()
+            render_template('error.html')
     return files
 
 if __name__ == '__main__':
